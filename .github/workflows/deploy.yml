@@ -24,30 +24,23 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build static site
+      - name: Build site
         run: bun run build
         env:
-          NITRO_PRESET: static
+          NITRO_PRESET: node
           # Set these in the repo under Settings > Secrets and variables > Actions > Variables.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_SUPABASE_PROJECT_ID: ${{ vars.VITE_SUPABASE_PROJECT_ID }}
 
-      # GitHub Pages serves 404.html for unknown paths; make it the app shell
-      # so client-side routes (/admin, /auth, ...) still load.
-      - name: Add SPA fallback
-        run: |
-          if [ -d .output/public ]; then PUB=.output/public;
-          elif [ -d dist/public ]; then PUB=dist/public;
-          else PUB=dist/client; fi
-          cp "$PUB/index.html" "$PUB/404.html"
-          echo "PUB=$PUB" >> "$GITHUB_ENV"
+      - name: Render static pages
+        run: node scripts/prerender.mjs
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.PUB }}
+          path: .output/public
 
   deploy:
     needs: build
