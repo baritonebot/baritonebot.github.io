@@ -6,14 +6,27 @@ const WORKER_URL =
 const STORAGE_KEY = "baritonebot_visits_net";
 
 /**
- * Sends an anonymous visit ping to our own Cloudflare Worker on each page view.
- * No personal data is collected — only page, referrer, screen/viewport and locale.
+ * Sends an anonymous visit ping to our own Cloudflare Worker, once per
+ * browser session (tab). No personal data is collected — only page,
+ * referrer, screen/viewport and locale.
  */
+
 export function VisitorPing() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Only one ping per browser session (tab) — matches the updated worker.
+    const SESSION_KEY = "baritonebot_pinged";
+    try {
+      if (sessionStorage.getItem(SESSION_KEY)) return;
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      /* storage unavailable — still send the ping */
+    }
+
+
 
     let visits: number[] = [];
     try {
