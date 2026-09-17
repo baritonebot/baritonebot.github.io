@@ -1,0 +1,245 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Baritone design system — "Amethyst obsidian".
+ * Purple-tinted charcoal cave stone, amethyst ore glow, glowstone gold accents.
+ * All colors are oklch semantic tokens. Never hardcode colors in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-glow: var(--primary-glow);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-copper: var(--copper);
+  --color-moss: var(--moss);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.155 0.022 305);
+  --foreground: oklch(0.93 0.012 300);
+  --card: oklch(0.198 0.024 303);
+  --card-foreground: oklch(0.93 0.012 300);
+  --popover: oklch(0.198 0.024 303);
+  --popover-foreground: oklch(0.93 0.012 300);
+  --primary: oklch(0.63 0.19 302);
+  --primary-foreground: oklch(0.155 0.022 305);
+  --primary-glow: oklch(0.78 0.14 300);
+  --secondary: oklch(0.245 0.026 303);
+  --secondary-foreground: oklch(0.93 0.012 300);
+  --muted: oklch(0.232 0.024 303);
+  --muted-foreground: oklch(0.67 0.02 298);
+  --accent: oklch(0.245 0.026 303);
+  --accent-foreground: oklch(0.78 0.14 300);
+  --copper: oklch(0.75 0.14 85);
+  --moss: oklch(0.69 0.068 155);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.96 0.01 300);
+  --border: oklch(0.93 0.02 300 / 13%);
+  --input: oklch(0.93 0.02 300 / 17%);
+  --ring: oklch(0.63 0.19 302);
+  --chart-1: oklch(0.63 0.19 302);
+  --chart-2: oklch(0.75 0.14 85);
+  --chart-3: oklch(0.69 0.068 155);
+  --chart-4: oklch(0.78 0.14 300);
+  --chart-5: oklch(0.67 0.02 298);
+  --sidebar: oklch(0.198 0.024 303);
+  --sidebar-foreground: oklch(0.93 0.012 300);
+  --sidebar-primary: oklch(0.63 0.19 302);
+  --sidebar-primary-foreground: oklch(0.155 0.022 305);
+  --sidebar-accent: oklch(0.245 0.026 303);
+  --sidebar-accent-foreground: oklch(0.93 0.012 300);
+  --sidebar-border: oklch(0.93 0.02 300 / 13%);
+  --sidebar-ring: oklch(0.63 0.19 302);
+}
+
+.dark {
+  --background: oklch(0.155 0.022 305);
+  --foreground: oklch(0.93 0.012 300);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    position: relative;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  /* Ambient cave glow: layered ore light pools over the dark stone. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        60rem 40rem at 12% -10%,
+        color-mix(in oklab, var(--primary) 24%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        48rem 34rem at 92% 8%,
+        color-mix(in oklab, var(--copper) 16%, transparent),
+        transparent 72%
+      ),
+      radial-gradient(
+        70rem 48rem at 50% 108%,
+        color-mix(in oklab, var(--moss) 14%, transparent),
+        transparent 74%
+      );
+  }
+
+  /* Minecraft voxel terrain panorama anchored to the bottom of the viewport. */
+  html::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    background-image: url("./assets/mc-terrain.png");
+    background-repeat: no-repeat;
+    background-position: center bottom -2vh;
+    background-size: min(120rem, 165vw) auto;
+    opacity: 0.28;
+    filter: hue-rotate(62deg) saturate(1.1) contrast(1.05);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 45%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+
+  /* Mineshaft grid: faint chiselled block lines with a vignette fade. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 56px 56px;
+    mask-image: radial-gradient(120% 90% at 50% 0%, black 10%, transparent 78%);
+  }
+}
+
+@utility ore-pulse {
+  animation: ore-pulse 3.4s ease-in-out infinite;
+}
+
+@utility text-ore {
+  background-image: linear-gradient(
+    100deg,
+    var(--foreground) 10%,
+    var(--primary-glow) 55%,
+    var(--copper) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@utility panel {
+  background-color: color-mix(in oklab, var(--card) 82%, transparent);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+@utility panel-hover {
+  &:hover {
+    border-color: color-mix(in oklab, var(--primary) 45%, transparent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--primary) 70%, transparent);
+  }
+}
+
+@utility float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+
+@keyframes ore-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}

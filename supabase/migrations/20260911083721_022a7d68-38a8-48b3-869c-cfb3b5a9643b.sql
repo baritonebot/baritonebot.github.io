@@ -1,0 +1,4 @@
+CREATE POLICY "Admins can read download files" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'downloads' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can upload download files" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'downloads' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can update download files" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'downloads' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins can delete download files" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'downloads' AND public.has_role(auth.uid(), 'admin'));
